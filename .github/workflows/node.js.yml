@@ -1,12 +1,12 @@
-name: React Native CI/CD
+name: Run Tests
 
 on:
   push:
     branches:
-      - main
+      - expo-router
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,10 +19,13 @@ jobs:
           node-version: 14
 
       - name: Install dependencies
-        run: npm ci
+        run: npm i
 
-      - name: Build Android
-        run: npx react-native run-android --variant=release
+      - name: Start the Expo server
+        run: npm start &
 
-      - name: Build iOS
-        run: npx react-native run-ios --configuration=Release
+      - name: Wait for Expo server to start
+        run: sleep 60
+
+      - name: Run tests
+        run: npm test
